@@ -11,15 +11,16 @@ Pipeline steps:
      (token-aware via tiktoken, chunk_size=800, chunk_overlap=200).
   3. Embed chunks with OpenAI and store them in ChromaDB (persisted to
      chroma_db/; reuses existing DB if present).
-  4. Run queries using a retriever (MMR search) + LLM via a LangChain LCEL
-     chain (prompt → LLM → StrOutputParser).
+  4. Run queries using a retriever (MMR search, k=3, fetch_k=10) + LLM via a
+     LangChain LCEL chain: retriever → format_docs → prompt → LLM → StrOutputParser.
 
 Usage:
   Set OPENAI_API_KEY in .env, then run:
     python main.py
 
-  The script loads "biden's_state_of_union_speech.txt", builds or loads the
-  vector store, runs a demo query, and prints the RAG answer.
+  The script loads "biden's_state_of_union_speech.txt" (or reuses chroma_db/ if
+  it exists), runs a retriever lookup and a full RAG query, prints the first
+  retrieved chunk, the chain graph (ASCII), and the final RAG answer.
 
 Dependencies:
   - openai (ChatOpenAI, OpenAIEmbeddings)
@@ -117,6 +118,17 @@ print(docs[0].page_content)
 # result = qa_chain.invoke("What is the main topic of the speech?")
 # print(result["result"])
 def format_docs(docs):
+    """Format a list of LangChain documents into a single string for the prompt.
+
+    Each document is prefixed with '[Source N]' (1-based index) followed by
+    its page_content. Documents are joined with double newlines.
+
+    Args:
+        docs: List of documents with .page_content (e.g. from the retriever).
+
+    Returns:
+        A single string suitable for the {context} placeholder in the RAG prompt.
+    """
     return "\n\n".join(
         f"[Source {i+1}]\n{doc.page_content}"
         for i, doc in enumerate(docs)

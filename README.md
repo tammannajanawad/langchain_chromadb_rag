@@ -2,14 +2,14 @@
 
 A minimal **Retrieval-Augmented Generation (RAG)** demo that indexes a long text document (e.g. a speech transcript), stores embeddings in ChromaDB, and answers questions using LangChain, OpenAI embeddings, and an LLM.
 
-referred this kaggle - https://www.kaggle.com/code/gpreda/rag-using-llama-2-langchain-and-chromadb/notebook
+Inspired by this [Kaggle notebook](https://www.kaggle.com/code/gpreda/rag-using-llama-2-langchain-and-chromadb/notebook).
 
 ## What it does
 
-1. **Load** a source text file (e.g. a speech transcript).
-2. **Split** it into chunks with overlap using `RecursiveCharacterTextSplitter` (tiktoken-based).
-3. **Embed** chunks with OpenAI and **store** them in ChromaDB.
-4. **Query** via a retriever (MMR) and an LLM using `RetrievalQA`.
+1. **Load** a source text file (e.g. a speech transcript) via `TextLoader`.
+2. **Split** it into chunks with overlap using `RecursiveCharacterTextSplitter` (tiktoken-based, chunk_size=800, chunk_overlap=200).
+3. **Embed** chunks with OpenAI and **store** them in ChromaDB (persisted under `chroma_db/`; reuses existing DB if present).
+4. **Query** via an MMR retriever (k=3, fetch_k=10) and an LCEL RAG chain: retriever → `format_docs` → prompt → `ChatOpenAI` (gpt-4o-mini) → `StrOutputParser`.
 
 The demo is set up for `biden's_state_of_union_speech.txt` in the project root. You can replace it with any `.txt` file and adjust the path in `main.py`.
 
@@ -55,19 +55,20 @@ source .venv/bin/activate   # or .venv\Scripts\activate on Windows
 python main.py
 ```
 
-The script will load the speech file, build the ChromaDB index under `chroma_db/`, run a similarity search and a RetrievalQA query, and print results.
+The script will load the speech file (or reuse the existing index in `chroma_db/`), run a retriever lookup and a full RAG query, then print the first retrieved chunk, the LCEL chain graph (ASCII), and the final RAG answer.
 
 ## Project structure
 
 ```
 .
-├── main.py              # RAG pipeline (load → split → embed → store → query)
-├── chroma_db/           # ChromaDB data (created on first run)
-├── .env                 # OPENAI_API_KEY (not committed)
-├── pyproject.toml       # Dependencies and project config
+├── main.py                          # RAG pipeline (load → split → embed → store → query)
+├── biden's_state_of_union_speech.txt # Default source document (optional)
+├── chroma_db/                       # ChromaDB data (created on first run)
+├── .env                             # OPENAI_API_KEY (not committed)
+├── pyproject.toml                   # Dependencies and project config
 └── README.md
 ```
 
 ## Dependencies
 
-Key packages: `langchain`, `langchain-community`, `langchain-classic`, `langchain-openai`, `langchain-text-splitters`, `chromadb`, `openai`, `dotenv`. See `pyproject.toml` for versions.
+Key packages: `langchain-community`, `langchain-openai`, `langchain-text-splitters`, `langchain-core`, `chromadb`, `openai`, `python-dotenv`. See `pyproject.toml` for versions.
