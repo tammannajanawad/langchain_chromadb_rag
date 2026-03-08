@@ -71,4 +71,4 @@ The script will load the speech file (or reuse the existing index in `chroma_db/
 
 ## Dependencies
 
-Key packages: `langchain-community`, `langchain-openai`, `langchain-text-splitters`, `langchain-core`, `chromadb`, `openai`, `python-dotenv`. See `pyproject.toml` for versions.
+Key packages: `langchain-community`, `langchain-openai`, `langchain-text-splitters`, `langchain-core`, `chromadb`, `python-dotenv`. See `pyproject.toml` for versions.
