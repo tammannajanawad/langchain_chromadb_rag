@@ -955,12 +955,10 @@ dependencies = [
     { name = "dotenv" },
     { name = "grandalf" },
     { name = "langchain" },
-    { name = "langchain-classic" },
     { name = "langchain-community" },
     { name = "langchain-core" },
     { name = "langchain-openai" },
     { name = "langchain-text-splitters" },
-    { name = "openai" },
 ]
 
 [package.metadata]
@@ -969,12 +967,10 @@ requires-dist = [
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "grandalf", specifier = ">=0.8" },
     { name = "langchain", specifier = ">=1.2.10" },
-    { name = "langchain-classic", specifier = ">=1.0.2" },
     { name = "langchain-community", specifier = ">=0.4.1" },
     { name = "langchain-core", specifier = ">=1.2.17" },
     { name = "langchain-openai", specifier = ">=1.1.10" },
     { name = "langchain-text-splitters", specifier = ">=1.1.1" },
-    { name = "openai", specifier = ">=2.26.0" },
 ]
 
 [[package]]
