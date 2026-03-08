@@ -1,0 +1,17 @@
+[project]
+name = "langchain-chromadb-rag"
+version = "0.1.0"
+description = "Minimal RAG demo: index text with LangChain + ChromaDB, query with OpenAI embeddings and LLM"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.5.2",
+    "dotenv>=0.9.9",
+    "langchain>=1.2.10",
+    "langchain-classic>=1.0.2",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.2.17",
+    "langchain-openai>=1.1.10",
+    "langchain-text-splitters>=1.1.1",
+    "openai>=2.26.0"
+]
