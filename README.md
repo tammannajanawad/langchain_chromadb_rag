@@ -2,6 +2,8 @@
 
 A minimal **Retrieval-Augmented Generation (RAG)** demo that indexes a long text document (e.g. a speech transcript), stores embeddings in ChromaDB, and answers questions using LangChain, OpenAI embeddings, and an LLM.
 
+referred this kaggle - https://www.kaggle.com/code/gpreda/rag-using-llama-2-langchain-and-chromadb/notebook
+
 ## What it does
 
 1. **Load** a source text file (e.g. a speech transcript).
